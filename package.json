@@ -1,7 +1,7 @@
 {
   "name": "search-with-google-geocoder",
   "version": "0.0.1",
-  "description": "Search place with Google geocoding API",
+  "description": "Public search geographical place using Google Geocoding API",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
