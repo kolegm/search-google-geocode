@@ -1,6 +1,6 @@
 var util = require('util');
 
-const DEFAULT_MSSG = 'Communicator error';
+const DEFAULT_MSSG = 'Google geocoder communication error';
 
 function CommunicationError(message, constructorOptions) {
   Error.call(this); // super constructor

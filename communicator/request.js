@@ -83,7 +83,7 @@ Searcher.prototype._send = function (callback) {
  * @access protected
  */
 Searcher.prototype._getUri = function () {
-  if (!this.uri || !this.uri.length) {
+  if (!this._checkUri()) {
     this._initUri();
   }
 

@@ -1,5 +1,5 @@
 {
-  "name": "search-with-google-geocoder",
+  "name": "search-google-geocode",
   "version": "0.0.1",
   "description": "Public search geographical place using Google Geocoding API",
   "main": "index.js",
