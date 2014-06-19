@@ -3,7 +3,7 @@
 Node.js module for geocoding and reverse geocoding.
 **Used Google geocoding API.**
 
-Geocoding is the process of matching address with geographic coordinates.
+Geocoding is the process of matching address with geographic coordinates.  
 Reverse Geocoding is the process of matching geographic coordinates with address.
 
 *Address geocoding.*
