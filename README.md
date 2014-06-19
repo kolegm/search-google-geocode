@@ -5,13 +5,15 @@
 Node.js module for geocoding and reverse geocoding.  
 [**Uses service Google geocoding API.**](https://developers.google.com/maps/documentation/geocoding)
 
-Geocoding is the process of matching address with geographic coordinates.  
-Reverse Geocoding is the process of matching geographic coordinates with address.
+[Geocoding](https://developers.google.com/maps/documentation/geocoding/#Geocoding) is the process of matching address with geographic coordinates.  
+[Reverse Geocoding](https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding) is the process of matching geographic coordinates with address.
 
-[*Address geocoding.*](https://developers.google.com/maps/documentation/geocoding/#Geocoding) Provide an address or location and receive potential Google geocodes.  
-[*Reverse geocoding.*](https://developers.google.com/maps/documentation/geocoding/#ReverseGeocoding) Provide latitude and longitude coordinates and receive the known address information for that location.
+[*Address geocoding.*](https://developers.google.com/maps/documentation/geocoding/#GeocodingRequests) Provide an address or location and receive potential Google geocodes.  
+[*Reverse geocoding.*](https://developers.google.com/maps/documentation/geocoding/#reverse-example) Provide latitude and longitude coordinates and receive the known address information for that location.
 
-[Output format like JSON](https://developers.google.com/maps/documentation/geocoding/#GeocodingRequests)
+[Output format like JSON](https://developers.google.com/maps/documentation/geocoding/#JSON)
+
+[Usage Limits](https://developers.google.com/maps/documentation/geocoding/#Limits)
 
 ### Installation
 >npm install google-geocoder [-S]
