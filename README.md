@@ -1,3 +1,6 @@
+*google-geocoder*
+
+
 Simple module used to search place with Google geocoding API.
 
 Geocoding is the process of matching addresses with geographic coordinates.
