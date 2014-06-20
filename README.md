@@ -1,7 +1,6 @@
 ##google-geocoder
 
 ### General
-
 Node.js module for geocoding and reverse geocoding.  
 [**Uses service Google geocoding API.**](https://developers.google.com/maps/documentation/geocoding)
 
