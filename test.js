@@ -14,23 +14,9 @@ var options = {
 
 function callback (error, result) {
   if (error) console.log(error);
-  console.log(result);
+  else console.log(result);
 }
 
-console.log('search process');
-console.log('result in language: ' + LANGUAGE);
-console.log('by address: ' + ADDRESS);
-console.log('by geo coords: ' + LATITUDE + ', ' + LONGITUDE);
+communicator.geocode(ADDRESS, callback, options);
 
-communicator.geocode(
-  ADDRESS, 
-  callback,
-  options
-);
-
-communicator.reverseGeocode(
-  LATITUDE, 
-  LONGITUDE,
-  callback,
-  options
-);
+communicator.reverseGeocode(LATITUDE, LONGITUDE, callback, options);
