@@ -15,12 +15,12 @@ Node.js module for geocoding and reverse geocoding.
 [Usage Limits](https://developers.google.com/maps/documentation/geocoding/#Limits)
 
 ### Installation
->npm install google-geocoder [-S]
+>npm install search-google-geocode [-S]
 
 ### Usage example
 ```javascript
 // initialize geocoder instance
-var geocoder = require('google-geocoder');
+var geocoder = require('search-google-geocode');
 
 // request parameters
 const ADDRESS = 'Kyiv, Khreshchatyk';
