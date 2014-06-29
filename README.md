@@ -1,4 +1,4 @@
-##google-geocoder
+##search-google-geocoder
 
 ### General
 Node.js module for geocoding and reverse geocoding.  
