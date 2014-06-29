@@ -14,7 +14,8 @@
     "search",
     "place",
     "google",
-    "geocoder"
+    "geocoder",
+    "reverse"
   ],
   "repository": {
     "type": "git",
