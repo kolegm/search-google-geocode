@@ -1,7 +1,7 @@
 /**
  * @todo use mocha test
  */
-var communicator = require('./index');
+var communicator = require('./');
 
 const ADDRESS = 'Kyiv, Khreshchatyk';
 const LATITUDE = '50.45';
