@@ -22,19 +22,21 @@ function Searcher() {
  * @access public
  */
 Searcher.prototype.geocode = function (address, callback, options) {
-  address = (address).toString();
+  address = this._parseAddress(address);
+
   if (!address.length) {
     return callback(
-      new CommunicationError("Address parameter is mandatory.")
+      new CommunicationError(util.format(
+        'Address parameter is mandatory. Input value is \'%s\'',
+        address
+      ))
     );
   }
 
-  options = _.extend(
-    { address: address},
-    (options || {})
-  );
+  options = _.extend({}, (options || {}));
+  options = _.extend(options, { address: address});
   this._useOptions(options);
-  
+
   this._send(callback);
 };
 
@@ -42,19 +44,23 @@ Searcher.prototype.geocode = function (address, callback, options) {
  * @access public
  */
 Searcher.prototype.reverseGeocode = function (lat, lng, callback, options) {
-  lat = parseFloat(lat);
-  lng = parseFloat(lng);
-  
+  lat = this._parseCoordinate(lat);
+  lng = this._parseCoordinate(lng);
+
   if (!lat || !lng) {
     return callback(
-      new CommunicationError("Geographical coordinates are mandatory.")
+      new CommunicationError(util.format(
+        'Geographical coordinates are mandatory. Input values: latitude is \'%s\', longitude is \'%s\'',
+        lat,
+        lng
+      ))
     );
   }
 
-  options = _.extend(
-    { latlng: util.format(GEO_COORDS_FORMAT, lat, lng) },
-    (options || {})
-  );
+  options = _.extend({}, (options || {}));
+  options = _.extend(options, {
+    latlng: util.format(GEO_COORDS_FORMAT, lat, lng)
+  });
   this._useOptions(options);
 
   this._send(callback);
@@ -71,14 +77,20 @@ Searcher.prototype._send = function (callback) {
     }, function (error, response, body) {
       if (error) {
         return callback(error);
+      } else if(response.statusCode != 200) {
+        error = new CommunicationError(util.format(
+          'Response status code is \'%s\'',
+          response.statusCode
+        ));
+        callback(error);
       } else {
         callback(null, JSON.parse(body));
       }
-    });
+    }).end();
   } catch (error) {
     return callback(error);
   }
-}
+};
 
 /**
  * @access protected
@@ -89,23 +101,23 @@ Searcher.prototype._getUri = function () {
   }
 
   this._checkUriWithError();
-  
+
   return this.uri;
-}
+};
 
 /**
  * @access protected
  */
 Searcher.prototype._initUri = function () {
   this.uri = config['uri'];
-}
+};
 
 /**
  * @access protected
  */
 Searcher.prototype._checkUri = function () {
   return (this.uri && this.uri.length);
-}
+};
 
 /**
  * @access protected
@@ -115,38 +127,62 @@ Searcher.prototype._checkUriWithError = function () {
     throw new CommunicationError("Uri is not valid.")
   }
   return true;
-}
+};
 
 /**
  * @access protected
  */
 Searcher.prototype._useOptions = function (options) {
-  this.options = _.extend({}, this.defaultOptions);
+  this.options = _.extend({}, this._defaultOptions);
   _.extend(this.options, (options || {}));
-}
+};
 
 /**
  * @access protected
  */
 Searcher.prototype._initDefaultOptions = function () {
-  this.defaultOptions = _.extend(
-    /**
-     * The 'sensor' Parameter
-     * The Google Maps API previously required that you include the sensor parameter to indicate 
-     * whether your application used a sensor to determine the user's location.
-     * This parameter is no longer required.
-     */
-    //{ sensor: false},
-    {},
+  /**
+   * The 'sensor' Parameter
+   * The Google Maps API previously required that you include the sensor parameter to indicate
+   * whether your application used a sensor to determine the user's location.
+   * This parameter is no longer required.
+   */
+  this._defaultOptions = _.extend(
+    {}, //{ sensor: false},
     config['options'] || {}
   );
-}
+};
 
 /**
  * @access protected
  */
 Searcher.prototype._getOptions = function () {
   return this.options;
-}
+};
 
-module.exports = new Searcher();
+/**
+ * @access protected
+ */
+Searcher.prototype._parseAddress = function (str) {
+  str = _.isEmpty(str)
+    ? EMPTY_ADDRESS_VALUE
+    : (str).toString();
+
+  return str;
+};
+
+/**
+ * @access protected
+ */
+Searcher.prototype._parseCoordinate = function (crd) {
+  if (crd) {
+    crd = parseFloat((crd).toString().replace(',','.'));
+  }
+  if (!_.isNumber(crd)) {
+    crd = EMPTY_COORDINATE_VALUE;
+  }
+
+  return crd;
+};
+
+module.exports = Searcher;

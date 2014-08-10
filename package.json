@@ -1,14 +1,14 @@
 {
   "name": "search-google-geocode",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Public search geographical location or address using Google Geocoding API: [reverse] geocoding.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "underscore": "^1.6.0",
-    "request": "^2.36.0"
+    "request": "^2.40.0",
+    "underscore": "^1.6.0"
   },
   "keywords": [
     "search",
@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git://github.com/kolegm/search-google-geocode.git"
   },
-  "author": { 
+  "author": {
     "name": "Oleg Kravchuk",
     "email": "kolegm.real@gmail.com"
   },
