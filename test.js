@@ -1,9 +1,8 @@
-/**
- * @todo use mocha test
- */
+var util = require('util');
+
 var communicator = require('./');
 
-const ADDRESS = 'Kyiv, Khreshchatyk';
+const ADDRESS = process.argv[2] || 'Kyiv, Khreschatyk';
 const LATITUDE = '50.45';
 const LONGITUDE = '30.523';
 const LANGUAGE = 'en';
@@ -14,7 +13,7 @@ var options = {
 
 function callback (error, result) {
   if (error) console.log(error);
-  else console.log(result);
+  else console.log(util.inspect(result, {depth: 5}));
 }
 
 communicator.geocode(ADDRESS, callback, options);

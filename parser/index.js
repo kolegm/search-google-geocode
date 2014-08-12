@@ -1,6 +1,6 @@
 /**
  * [The Google Geocoding API](https://developers.google.com/maps/documentation/geocoding/)
- * [Geocoding Service with javascript](https://developers.google.com/maps/documentation/javascript/geocoding?hl=uk)
+ * [Geocoding Service with javascript](https://developers.google.com/maps/documentation/javascript/geocoding)
  */
 
 /**
@@ -47,15 +47,9 @@ const STATUS_UNKNOWN_ERROR = 'UNKNOWN_ERROR';
 const TAG_COUNTRY = 'country'; // Indicates the national political entity, and is typically the highest order type returned by the Geocoder.
 const TAG_POSTAL = 'postal_code'; // Indicates a postal code as used to address postal mail within the country.
 const TAG_ROUTE = 'route'; // // Indicates a named route (such as "US 101").
-const TAG_AIRPORT = 'airport'; //
-const TAG_PARK = 'park';
-const TAG_POLITICAL = 'political'; // Indicates a political entity. Usually, this type indicates a polygon of some civil administration.
 const TAG_INTERSECTION = 'intersection'; // Indicates a major intersection, usually of two major roads.
 const TAG_STREET_ADDRESS = 'street_address'; //  Indicates a precise street address.
 const TAG_COLLOQUIAL_AREA = 'colloquial_area'; // Indicates a commonly-used alternative name for the entity.
-
-// Indicates a specific type of Japanese locality, to facilitate distinction between multiple locality components within a Japanese address.
-const TAG_WARD = 'ward';
 
 const TAG_NEIGHBORHOOD = 'neighborhood';
 
@@ -63,34 +57,20 @@ const TAG_PREMISE = 'premise'; // Indicates a named location, usually a building
 // Indicates a first-order entity below a named location, usually a singular building within a collection of buildings with a common name
 const TAG_SUBPREMISE = 'subpremise';
 
-const TAG_NATURAL_FEATURE = 'natural_feature'; // Indicates a prominent natural feature.
-
 const TAG_HOUSE_NUMBER = 'street_number'; // Indicates a precise street number. Like a house number
-const TAG_FLOOR = 'floor';
-const TAG_ROOM = 'room';
-const TAG_ESTABLISHMENT = 'establishment'; // Indicates a place that has not yet been categorized.
-const TAG_PARKING = 'parking';
-const TAG_POST_BOX = 'post_box';
-const TAG_POST_TOWN = 'postal_town'; // Indicates a grouping of geographic areas, such as locality and sublocality, used for mailing addresses in some countries.
 
-const TAG_BUS_STATION = 'bus_station';
-const TAG_TRAIN_STATION = 'train_station';
-const TAG_TRANSIT_STATION = 'transit_station';
+const TAG_ESTABLISHMENT = 'establishment'; // Indicates a place that has not yet been categorized.
 
 /**
- * Indicates a first-order civil entity below the country level.
- * Within the United States, these administrative levels are states.
+ * Indicates a civil entity below the country level.
  * Not all nations exhibit these administrative levels.
  */
-const TAG_ADMIN_A1 = 'administrative_area_level_1';
+const TAG_ADMIN_A1 = 'administrative_area_level_1'; // Within the United States, these administrative levels are states.
 const TAG_ADMIN_A2 = 'administrative_area_level_2'; // Indicates a second-order civil entity below the country level.
-const TAG_ADMIN_A3 = 'administrative_area_level_3'; // Indicates a third-order civil entity below the country level.
-const TAG_ADMIN_A4 = 'administrative_area_level_4'; // Indicates a fourth-order civil entity below the country level.
-const TAG_ADMIN_A5 = 'administrative_area_level_5'; // Indicates a fifth-order civil entity below the country level.
 
 
 const TAG_CITY = 'locality'; // Indicates an incorporated city or town political entity.
-const TAG_SUBCITY = 'sublocality '; // Indicates a first-order civil entity below a locality.
+const TAG_SUBCITY = 'sublocality'; // Indicates a first-order civil entity below a locality.
 // Each sublocality level is a civil entity. Larger numbers indicate a smaller geographic area.
 const TAG_SUBCITY_L1 = 'sublocality_level_1';
 const TAG_SUBCITY_L2 = 'sublocality_level_2';
@@ -123,7 +103,7 @@ module.exports.parseError = function (error) {
  */
 module.exports.parseData = function (data) {
   var result = [];
-  
+
   if (_.isObject(data)) {
     // check status field
     switch (data.status) {
@@ -140,7 +120,7 @@ module.exports.parseData = function (data) {
       default:
     }
   }
-  
+
   return result;
 };
 
@@ -150,7 +130,7 @@ module.exports.parseData = function (data) {
 function parse (externalHolder) {
   var internalHolder = [];
   var internal;
-  
+
   if (_.isArray(externalHolder)) {
     _.each(externalHolder, function (external) {
       internal = convert(external);
@@ -162,7 +142,7 @@ function parse (externalHolder) {
 
 function convert (external) {
   var internal = create();
-  
+
   if (!_.isEmpty(external)) {
     _.each(external.address_components, function (component) {
       _.each(component.types, function (type) {
@@ -175,8 +155,35 @@ function convert (external) {
             internal.state = component.long_name;
             internal.stateCode = component.short_name;
             break;
+          case TAG_ADMIN_A2:
+            internal.area = component.long_name;
+            break;
           case TAG_CITY:
             internal.city = component.long_name;
+            break;
+          case TAG_SUBCITY:
+            internal.subcity = component.long_name;
+            break;
+          case TAG_SUBCITY_L1:
+            internal.subcity1 = component.long_name;
+            break;
+          case TAG_SUBCITY_L2:
+            internal.subcity2 = component.long_name;
+            break;
+          case TAG_SUBCITY_L3:
+            internal.subcity3 = component.long_name;
+            break;
+          case TAG_SUBCITY_L4:
+            internal.subcity4 = component.long_name;
+            break;
+          case TAG_SUBCITY_L5:
+            internal.subcity5 = component.long_name;
+            break;
+          case TAG_NEIGHBORHOOD:
+            internal.neighborhood = component.long_name;
+            break;
+          case TAG_COLLOQUIAL_AREA:
+            internal.alternative = component.long_name;
             break;
           case TAG_POSTAL:
             internal.zipcode = component.long_name;
@@ -184,16 +191,61 @@ function convert (external) {
           case TAG_ROUTE:
             internal.streetName = component.long_name;
             break;
+          case TAG_INTERSECTION:
+            internal.streetIntersection = component.long_name;
+            break;
+          case TAG_STREET_ADDRESS:
+            internal.streetAddress = component.long_name;
+            break;
           case TAG_HOUSE_NUMBER:
             internal.streetNumber = component.long_name;
+            break;
+          case TAG_PREMISE:
+            internal.premise = component.long_name;
+            internal.premiseCode = component.short_name;
+            break;
+          case TAG_SUBPREMISE:
+            internal.subpremise = component.long_name;
+            break;
+          case TAG_ESTABLISHMENT:
+            internal.establishment = component.long_name;
+            internal.establishmentCode = component.short_name;
             break;
         }
       });
     });
-    
-    if (external.geometry && external.geometry.location) {
-      internal.latitude = external.geometry.location.lat;
-      internal.longitude = external.geometry.location.lng;
+
+    if (external.formatted_address) {
+      internal.formatted = external.formatted_address;
+    }
+
+    if (external.geometry) {
+      var geometry = external.geometry;
+
+      if (geometry.location) {
+        internal.latitude = external.geometry.location.lat;
+        internal.longitude = external.geometry.location.lng;
+      }
+
+      if (geometry.viewport) {
+        if (geometry.viewport.northeast) {
+          var northeast = geometry.viewport.northeast;
+          if (northeast.lat) {
+            internal.viewport.leftTop.latitude = northeast.lat;
+          }
+          if (northeast.lng) {
+            internal.viewport.leftTop.longitude = northeast.lng;
+          }
+
+          var southwest = geometry.viewport.southwest;
+          if (southwest.lat) {
+            internal.viewport.rigthBottom.latitude = southwest.lat;
+          }
+          if (southwest.lng) {
+            internal.viewport.rigthBottom.longitude = southwest.lng;
+          }
+        }
+      }
     }
   }
   
