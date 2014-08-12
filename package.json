@@ -1,6 +1,6 @@
 {
   "name": "search-google-geocode",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Public search geographical location or address using Google Geocoding API: [reverse] geocoding.",
   "main": "index.js",
   "scripts": {
