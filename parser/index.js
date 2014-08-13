@@ -80,7 +80,6 @@ const TAG_SUBCITY_L5 = 'sublocality_level_5';
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-var util = require('util');
 var _ = require('underscore');
 
 var model = require('./model.json');
