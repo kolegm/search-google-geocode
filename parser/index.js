@@ -82,7 +82,9 @@ const TAG_SUBCITY_L5 = 'sublocality_level_5';
 
 var _ = require('underscore');
 
-var model = require('./model.json');
+function create() {
+  return _.extend({}, require('./model.json'));
+}
 
 module.exports.parseError = function (error) {
   if (error && _.isObject(error)) {
@@ -182,7 +184,7 @@ function convert (external) {
             internal.neighborhood = component.long_name;
             break;
           case TAG_COLLOQUIAL_AREA:
-            internal.alternative = component.long_name;
+            internal.alternate = component.long_name;
             break;
           case TAG_POSTAL:
             internal.zipcode = component.long_name;
@@ -207,8 +209,8 @@ function convert (external) {
             internal.subpremise = component.long_name;
             break;
           case TAG_ESTABLISHMENT:
-            internal.establishment = component.long_name;
-            internal.establishmentCode = component.short_name;
+            internal.place = component.long_name;
+            internal.placeCode = component.short_name;
             break;
         }
       });
@@ -227,30 +229,35 @@ function convert (external) {
       }
 
       if (geometry.viewport) {
+        var viewport = {
+          leftTop: { latitude: null, longitude: null },
+          rigthBottom: { latitude: null, longitude: null },
+        }
+
         if (geometry.viewport.northeast) {
           var northeast = geometry.viewport.northeast;
           if (northeast.lat) {
-            internal.viewport.leftTop.latitude = northeast.lat;
+            viewport.leftTop.latitude = northeast.lat;
           }
           if (northeast.lng) {
-            internal.viewport.leftTop.longitude = northeast.lng;
-          }
-
-          var southwest = geometry.viewport.southwest;
-          if (southwest.lat) {
-            internal.viewport.rigthBottom.latitude = southwest.lat;
-          }
-          if (southwest.lng) {
-            internal.viewport.rigthBottom.longitude = southwest.lng;
+            viewport.leftTop.longitude = northeast.lng;
           }
         }
+
+        if (geometry.viewport.southwest) {
+          var southwest = geometry.viewport.southwest;
+          if (southwest.lat) {
+            viewport.rigthBottom.latitude = southwest.lat;
+          }
+          if (southwest.lng) {
+            viewport.rigthBottom.longitude = southwest.lng;
+          }
+        }
+
+        internal.viewport = viewport;
       }
     }
   }
-  
-  return internal;
-}
 
-function create() {
-  return _.extend({}, model);
+  return internal;
 }

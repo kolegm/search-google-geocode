@@ -2,8 +2,6 @@
   "uri": "http://maps.googleapis.com/maps/api/geocode/json",
   "options": {
     "v": "3",
-    "@todo_1": "Language is a dynamic parameter and depends on UI",
-    "language": "en",
-    "@todo_2": "API_KEY"
+    "language": "en"
   }
 }
